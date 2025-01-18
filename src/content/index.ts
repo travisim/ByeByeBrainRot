@@ -1,6 +1,6 @@
-import './styles.css';
 import html2canvas from 'html2canvas';
 import { checkBrainrotModel } from './model';
+import './styles.css';
 import "./styles2.scss";
 
 
@@ -149,21 +149,22 @@ function checkUrlAndBlock() {
     const currentUrl = window.location.href;
     if (blockedUrls.some(url => currentUrl.includes(url))) {
         // brainrotBlocker();
-        // setInterval(() => {
-        //     html2canvas(document.body).then(canvas => {
-        //         const dataUrl = canvas.toDataURL('image/png');
-        //         console.log(dataUrl);
-        //         console.log("Checking for brainrot...");
-        //         // save the image to a file
-        //         // checkBrainrotModel(dataUrl)
-        //         //     .then(data => {
-        //         //         if (data["prediction"] == "Brainrot" && data["confidence"] > 0.5) {
-        //         //             createBlocker();
-        //         //         }
-        //         //     })
-        //         //     .catch(error => console.error(error));;
-        //     });
-        // }, timeout * 1000); // Take a screenshot every second
+        setInterval(() => {
+            html2canvas(document.body).then(canvas => {
+                const dataUrl = canvas.toDataURL('image/png');
+                console.log("Checking for brainrot...");
+                // save the image to a file
+                checkBrainrotModel(dataUrl)
+                    .then(data => {
+                        console.log(data);
+                        if (data["prediction"] == "Brainrot" && data["confidence"] > 0.5) {
+                          brainrotBlocker();
+                        }
+                    })
+                    .catch(error => console.error(error));;
+            });
+        }, timeout * 5 * 1000); // Take a screenshot every second
+
     }
 }
 
