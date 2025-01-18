@@ -1,0 +1,119 @@
+// Colors - Using Apple's typical neutral palette
+$color-background: blue;
+$color-primary: #0071e3;
+$color-secondary: #86868b;
+$color-success: #00a854;
+$color-dark: #1d1d1f;
+
+// Shadows and effects
+$shadow-subtle: 0 2px 6px rgba(0, 0, 0, 0.1);
+$shadow-prominent: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+// Typography
+$font-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+
+body {
+  background-color: $color-background;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: $font-primary;
+  -webkit-font-smoothing: antialiased;
+}
+
+.game {
+  background-color: $color-background;
+  transition: background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+  
+  &.game--victory {
+    background-color: $color-success;
+  }
+}
+
+.wrapper {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+
+  
+}
+
+.message {
+  color: $color-dark;
+  font-family: $font-primary;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+}
+
+.board {
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  min-width: 90vw;
+  min-height: 90vh;
+  overflow: hidden;
+  border: 1px solid rgba($color-secondary, 0.2);
+  background-color: white;
+  box-shadow: $shadow-subtle;
+}
+
+.unclickable {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 980px;
+  border: none;
+  text-decoration: none;
+  color: white;
+  background-color: blue;
+  backdrop-filter: blur(20px);
+  box-shadow: $shadow-subtle;
+  
+  &:hover {
+    background-color: darken($color-primary, 5%);
+    transform: translateY(-52%);
+    box-shadow: $shadow-prominent;
+  }
+  
+  &:active {
+    transform: translateY(-48%);
+  }
+}
+
+.unclickable--active {
+  background-color: $color-success;
+  transform: translateY(-50%) scale(0.98);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    background-color: darken($color-success, 5%);
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(-50%);
+  }
+}
+
+// Replace wiggle animation with a more subtle Apple-like animation
+.
+{
+  animation: appear 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
