@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Vite Chrome Extension",
+    "version": "1.0.0",
+    "description": "A Chrome extension built with Vite.",
+    "icons": {
+    },
+    "action": {
+      "default_popup": "src/popup/index.html"
+    },
+    "background": {
+      "service_worker": "dist/background/index.js"
+    },
+    "permissions": ["storage", "tabs"],
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["dist/content/index.js"]
+      }
+    ]
+  }
+  
