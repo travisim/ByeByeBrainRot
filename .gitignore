@@ -10,3 +10,9 @@ dist/
 # OS/IDE-specific files
 .DS_Store
 .vscode/
+
+**/venv/
+**/__pycache__/
+**/BrainrotDetector-0.001-6conv-basic.keras
+ahk/
+ahk.zip

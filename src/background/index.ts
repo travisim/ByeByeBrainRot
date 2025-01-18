@@ -41,10 +41,10 @@ class VideoRecorder {
   }
 }
 
-const recorder = new VideoRecorder();
-recorder.start();
+// const recorder = new VideoRecorder();
+// recorder.start();
 
-// Cleanup on page unload
-window.addEventListener("unload", () => {
-  recorder.stop();
-});
+// // Cleanup on page unload
+// window.addEventListener("unload", () => {
+//   recorder.stop();
+// });
