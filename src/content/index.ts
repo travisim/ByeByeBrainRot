@@ -44,7 +44,7 @@ function checkUrlAndBlock() {
                 // save the image to a file
                 // checkBrainrotModel(dataUrl)
                 //     .then(data => {
-                //         if (data > 0.5) {
+                //         if (data["prediction"] == "Brainrot" && data["confidence"] > 0.5) {
                 //             createBlocker();
                 //         }
                 //     })
