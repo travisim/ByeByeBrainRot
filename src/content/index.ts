@@ -1,14 +1,10 @@
-import './styles.css';
-import html2canvas from 'html2canvas';
-import { checkBrainrotModel } from './model';
+import "./styles.css";
+import html2canvas from "html2canvas";
+import { checkBrainrotModel } from "./model";
 import "./styles2.css";
+import { create } from "domain";
 
-
-const blockedUrls = [
-    'youtube.com',
-    'facebook.com',
-    'twitter.com'
-];
+const blockedUrls = ["youtube.com", "facebook.com", "twitter.com"];
 
 const timeout = 5; // 5 seconds
 
@@ -37,12 +33,9 @@ function createGameContainer(overlay) {
     button.style.top = `${y}px`;
   });
 
-
-    setTimeout(() => {
-      button.removeEventListener("mouseover", (e) => { });
-     
-    }, 10000);
-
+  setTimeout(() => {
+    button.removeEventListener("mouseover", (e) => {});
+  }, 10000);
 
   button.addEventListener("click", () => {
     overlay.style.display = "none";
@@ -51,10 +44,6 @@ function createGameContainer(overlay) {
   board.appendChild(button);
   game.appendChild(board);
   wrapper.appendChild(game);
-
-
-
-
 
   const getRandomIntInRange = (min, max) =>
     Math.floor(Math.random() * (max - min) + min);
@@ -78,22 +67,20 @@ function createGameContainer(overlay) {
   };
 
   const resetGame = () => {
-    button.textContent = "Bypass Screentime";
+    button.textContent = "Temporary unlock for 5 minutes";
     button.classList.remove("unclickable--active");
     game.classList.remove("game--victory");
     const play = setInterval(updateOffset, getRandomIntInRange(500, 1500));
-    return play
+    return play;
   };
 
   resetGame();
   button.onclick = handleClick;
-
-
-
-
+  setTimeout(() => {
+    overlay.style.display = "block";
+    createBlocker();
+  }, timeout * 60 * 1000); // 5 minutes
   return wrapper;
-
-
 }
 
 function createBlocker() {
@@ -103,40 +90,114 @@ function createBlocker() {
   const message = document.createElement("div");
   message.className = "message";
   message.textContent =
-    "🚨🚨Detected Brainrot!🚨🚨 You have been blocked from this site.";
+    "🚨🚨Detected Distractions!!🚨🚨 You have been blocked from this site.";
 
   const gameContainer = createGameContainer(overlay);
 
   overlay.appendChild(message);
-    overlay.appendChild(gameContainer);
-    
+  overlay.appendChild(gameContainer);
+
+  document.body.appendChild(overlay);
+}
+
+function brainrotBlocker() {
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+
+  const message = document.createElement("div");
+  message.className = "message";
+  message.textContent = "🚨🚨Detected Brainrot!!🚨🚨 Please repeat.";
+
+  const audioTracks =
+    document.querySelectorAll<HTMLMediaElement>("audio, video");
+  audioTracks.forEach((track) => {
+    track.pause();
+  });
+
+  overlay.appendChild(message);
   document.body.appendChild(overlay);
 }
 
 function checkUrlAndBlock() {
-    const currentUrl = window.location.href;
-    if (blockedUrls.some(url => currentUrl.includes(url))) {
-        setInterval(() => {
-            html2canvas(document.body).then(canvas => {
-                const dataUrl = canvas.toDataURL('image/png');
-                console.log(dataUrl);
-                console.log("Checking for brainrot...");
-                // save the image to a file
-                // checkBrainrotModel(dataUrl)
-                //     .then(data => {
-                //         if (data > 0.5) {
-                //             createBlocker();
-                //         }
-                //     })
-                //     .catch(error => console.error(error));;
-            });
-        }, timeout * 1000); // Take a screenshot every second
-    }
+  const currentUrl = window.location.href;
+  createBlocker();
+  if (blockedUrls.some((url) => currentUrl.includes(url))) {
+    brainrotBlocker();
+    // setInterval(() => {
+    //     html2canvas(document.body).then(canvas => {
+    //         const dataUrl = canvas.toDataURL('image/png');
+    //         console.log(dataUrl);
+    //         console.log("Checking for brainrot...");
+    //         // save the image to a file
+    //         // checkBrainrotModel(dataUrl)
+    //         //     .then(data => {
+    //         //         if (data["prediction"] == "Brainrot" && data["confidence"] > 0.5) {
+    //         //             createBlocker();
+    //         //         }
+    //         //     })
+    //         //     .catch(error => console.error(error));;
+    //     });
+    // }, timeout * 1000); // Take a screenshot every second
+  }
 }
 
 // Wait for the page to load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', checkUrlAndBlock);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", checkUrlAndBlock);
 } else {
-    checkUrlAndBlock();
+  checkUrlAndBlock();
 }
+
+async function recordAudio(): Promise<void> {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        sampleRate: 44100,
+      },
+    });
+
+    const options = { mimeType: "audio/webm" };
+    const mediaRecorder = new MediaRecorder(stream, options);
+    const audioChunks: Blob[] = [];
+
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        audioChunks.push(event.data);
+      }
+    };
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const link = document.createElement("a");
+      link.href = audioUrl;
+      link.download = `recording-${Date.now()}.webm`;
+      link.click();
+
+      // Cleanup
+      URL.revokeObjectURL(audioUrl);
+      stream.getTracks().forEach((track) => track.stop());
+    };
+
+    // Start recording and trigger dataavailable every 100ms
+    mediaRecorder.start(100);
+    console.log("Recording started...");
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (mediaRecorder.state === "recording") {
+          mediaRecorder.stop();
+          console.log("Recording stopped...");
+        }
+        resolve();
+      }, 5000);
+    });
+  } catch (error) {
+    console.error("Error recording audio:", error);
+    throw error;
+  }
+}
+
+recordAudio();
