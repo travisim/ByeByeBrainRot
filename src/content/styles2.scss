@@ -12,16 +12,6 @@ $shadow-prominent: 0 4px 12px rgba(0, 0, 0, 0.15);
 // Typography
 $font-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
 
-body {
-  background-color: $color-background;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: $font-primary;
-  -webkit-font-smoothing: antialiased;
-}
-
 .game {
   background-color: $color-background;
   transition: background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);

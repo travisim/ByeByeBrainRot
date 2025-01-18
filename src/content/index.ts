@@ -110,8 +110,8 @@ function brainrotBlocker() {
 
     const message = document.createElement("div");
     message.className = "message";
-    message.textContent =
-        "🚨🚨Detected Brainrot!!🚨🚨 Please repeat.";
+    message.innerHTML =
+        "🚨🚨Detected Brainrot!!🚨🚨<br> Please repeat 'I will not watch brainrot' three times to continue.";
 
     const audioTracks = document.querySelectorAll<HTMLMediaElement>("audio, video");
     audioTracks.forEach(track => {
@@ -120,12 +120,35 @@ function brainrotBlocker() {
     
     overlay.appendChild(message);
     document.body.appendChild(overlay);
+    var repeatMessages: HTMLDivElement[] = [];
+    for(let i = 0; i < 3; i++) {
+        const repeatMessage = document.createElement("div");
+        repeatMessage.className = "repeat-message";
+        repeatMessage.textContent = "I will not watch brainrot";
+        repeatMessage.style.fontSize = "30px";
+        repeatMessage.style.color = "grey";
+        repeatMessage.style.opacity = "0.5";
+
+        repeatMessage.addEventListener("mouseover", () => {
+            repeatMessage.style.opacity = "1";
+            repeatMessage.style.color = "black";
+        });
+
+        repeatMessage.addEventListener("mouseout", () => {
+            repeatMessage.style.opacity = "0.5";
+            repeatMessage.style.color = "grey";
+        });
+
+        overlay.appendChild(repeatMessage);
+        repeatMessages.push(repeatMessage);
+    }
+
 }
 
 function checkUrlAndBlock() {
     const currentUrl = window.location.href;
     if (blockedUrls.some(url => currentUrl.includes(url))) {
-        brainrotBlocker();
+        // brainrotBlocker();
         // setInterval(() => {
         //     html2canvas(document.body).then(canvas => {
         //         const dataUrl = canvas.toDataURL('image/png');

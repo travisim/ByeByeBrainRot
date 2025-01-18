@@ -1,13 +1,12 @@
-
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
   z-index: 99999;
-  display: flex;
+  display: none; /* Hide by default */
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -15,25 +14,16 @@
   pointer-events: auto; /* Allows interaction with overlay */
 }
 
+body.overlay-active .overlay {
+  display: flex; /* Show when active */
+}
+
 body.overlay-active {
   overflow: hidden; /* Prevents scrolling */
 }
 
-.message {
+.overlay .message {
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
-}
-
-.button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.button:hover {
-  background-color: #0056b3;
 }
