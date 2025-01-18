@@ -1,8 +1,11 @@
+
 import "./styles.css";
 import html2canvas from "html2canvas";
 import { checkBrainrotModel } from "./model";
 import "./styles2.css";
 import { create } from "domain";
+
+
 
 const blockedUrls = ["youtube.com", "facebook.com", "twitter.com"];
 
@@ -33,9 +36,10 @@ function createGameContainer(overlay) {
     button.style.top = `${y}px`;
   });
 
-  setTimeout(() => {
-    button.removeEventListener("mouseover", (e) => {});
-  }, 10000);
+    setTimeout(() => {
+        button.removeEventListener("mouseover", (e) => { });
+    }, 10000);
+
 
   button.addEventListener("click", () => {
     overlay.style.display = "none";
@@ -76,28 +80,14 @@ function createGameContainer(overlay) {
 
   resetGame();
   button.onclick = handleClick;
-  setTimeout(() => {
-    overlay.style.display = "block";
-    createBlocker();
-  }, timeout * 60 * 1000); // 5 minutes
+
+
+    setTimeout(() => {
+        overlay.style.display = "block";
+        createBlocker();
+    }, timeout * 60 * 1000); // 5 minutes
   return wrapper;
-}
 
-function createBlocker() {
-  const overlay = document.createElement("div");
-  overlay.className = "overlay";
-
-  const message = document.createElement("div");
-  message.className = "message";
-  message.textContent =
-    "🚨🚨Detected Distractions!!🚨🚨 You have been blocked from this site.";
-
-  const gameContainer = createGameContainer(overlay);
-
-  overlay.appendChild(message);
-  overlay.appendChild(gameContainer);
-
-  document.body.appendChild(overlay);
 }
 
 function brainrotBlocker() {
@@ -106,7 +96,10 @@ function brainrotBlocker() {
 
   const message = document.createElement("div");
   message.className = "message";
-  message.textContent = "🚨🚨Detected Brainrot!!🚨🚨 Please repeat.";
+
+  message.textContent =
+    "🚨🚨Detected Distractions!!🚨🚨 You have been blocked from this site.";
+
 
   const audioTracks =
     document.querySelectorAll<HTMLMediaElement>("audio, video");
@@ -118,7 +111,26 @@ function brainrotBlocker() {
   document.body.appendChild(overlay);
 }
 
+function brainrotBlocker() {
+    const overlay = document.createElement("div");
+    overlay.className = "overlay";
+
+    const message = document.createElement("div");
+    message.className = "message";
+    message.textContent =
+        "🚨🚨Detected Brainrot!!🚨🚨 Please repeat.";
+
+    const audioTracks = document.querySelectorAll<HTMLMediaElement>("audio, video");
+    audioTracks.forEach(track => {
+        track.pause();
+    });
+    
+    overlay.appendChild(message);
+    document.body.appendChild(overlay);
+}
+
 function checkUrlAndBlock() {
+
   const currentUrl = window.location.href;
   createBlocker();
   if (blockedUrls.some((url) => currentUrl.includes(url))) {
@@ -139,6 +151,7 @@ function checkUrlAndBlock() {
     //     });
     // }, timeout * 1000); // Take a screenshot every second
   }
+
 }
 
 // Wait for the page to load
