@@ -37,8 +37,6 @@ body {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-
-  
 }
 
 .message {
@@ -67,16 +65,19 @@ body {
 .unclickable {
   cursor: pointer;
   position: absolute;
+  height: 10%;
+  width: 10%;
   top: 50%;
   transform: translateY(-50%);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 1.125rem;
+  font-family: comic sans ms;
+  font-size: calc(0.1rem + 1vw); // Adjust font size based on viewport width
   padding: 0.75rem 1.5rem;
   border-radius: 980px;
   border: none;
   text-decoration: none;
   color: white;
-  background-color: blue;
+  background-color: rgb(255, 159, 75);
   backdrop-filter: blur(20px);
   box-shadow: $shadow-subtle;
   
@@ -113,7 +114,6 @@ body {
 }
 
 // Replace wiggle animation with a more subtle Apple-like animation
-.
-{
+.element {
   animation: appear 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
